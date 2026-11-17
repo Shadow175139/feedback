@@ -1,0 +1,5 @@
+reduce ui.git
+.github
+README.md
+Dockerfile
+docker-compose.yml

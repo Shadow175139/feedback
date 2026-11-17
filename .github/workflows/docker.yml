@@ -1,0 +1,22 @@
+name: Build Docker image
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Build image
+        run: docker build --tag feedback-hub:test .
+      - name: Start container
+        run: docker run --detach --publish 8080:80 --name feedback-hub feedback-hub:test
+      - name: Verify application
+        run: curl --fail http://localhost:8080
+      - name: Stop container
+        if: always()
+        run: docker rm --force feedback-hub
